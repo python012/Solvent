@@ -14,10 +14,10 @@ public abstract class Solvent {
     }
 
     public void parseParams(String... params) {
-        for (String param:params) {
+        for (String param : params) {
             try {
                 String name = param.substring(0, param.indexOf('=').trim());
-                String value = param.substring(param.indexOf('=')+1).trim();
+                String value = param.substring(param.indexOf('=') + 1).trim();
 
                 if (!parameters.containsKey(name)) {
                     parameters.put(name, value);
@@ -50,9 +50,9 @@ public abstract class Solvent {
 
     public abstract void prepare();
 
-    public <X extends Solvent> X navigateTo(X se) {
-        se.prepare();
-        return se;
+    public <X extends Solvent> X navigateTo(X sol) {
+        sol.prepare();
+        return sol;
     }
 
     public static void waitfor(long milles) {

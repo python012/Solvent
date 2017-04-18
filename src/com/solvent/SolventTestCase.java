@@ -5,8 +5,21 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import com.solvent.timerHelper.Timer;
 import com.solvent.l10nHelper.I18NUtil;
@@ -20,11 +33,47 @@ public abstract class SolventTestCase {
     private static ArrayList<Timer> timers = null;
     private static ArrayList<CheckPoint> checkPoints = null;
     protected static Logger log;
+    private final File directory = new File("/Users/reed/Documents/tmp1");
 
     public SolventTestCase() {
         log = SolventLogger.getLogger(this.getClass());
         I18NUtil.processI18NKeys(this);
+        directory.mkdir();
     }
+
+    private File filenameFor(Description description) {
+        String className = description.getClassName(); // get the test class
+                                                       // name
+        String methodName = description.getMethodName();
+
+        return new File(directory, className + "_" + methodName + ".png");
+    }
+
+    private void silentlySaveScreenshotTo(File file, String format) {
+        try {
+            saveScreenshotTo(file, format);
+        } catch (Exception e) {
+            System.err.println("Failed to screenshot to " + file + ", " + e);
+        }
+    }
+
+    private static BufferedImage BufferedImagetakeScreenshot() throws AWTException {
+        Robot robot = new Robot();
+        Rectangle captureSize = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        return robot.createScreenCapture(captureSize);
+    }
+
+    private static void saveScreenshotTo(File file, String format) throws AWTException, IOException {
+        ImageIO.write(takeScreenshotTo(), format, file);
+    }
+
+    @Rule
+    public TestRule watcher = new TestWatcher() {
+        @Override
+        public void failed(Throwable e, Description description) {
+            silentlySaveScreenshotTo(filenameFor(description), "png");
+        }
+    };
 
     @BeforeClass
     public void setupClass() {

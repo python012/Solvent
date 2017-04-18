@@ -38,18 +38,24 @@ public class SolventLogger {
             if (logFile != null) {
                 try {
                     Appender fileApp = new FileAppender(new PatternLayout(pattern), logFile.getPath());
-
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }
             }
-
         }
-
-
     }
 
-
+    public static void disableFileLogging() {
+        root.removeAppender(FILE_APPENDER_NAME);
+    }
+    
+    public static Logger getLogger(Class<?> clazz){
+        return getLogger(clazz.getName());
+    }
+    
+    public static Logger getLogger(String name) {
+        return LogManager.getLogger("solvent." + name);
+    }
 
 
 
