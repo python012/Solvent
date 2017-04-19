@@ -2,6 +2,8 @@ package com.solvent;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 /**
  * Created by reed on 16/10/13.
  */
@@ -22,11 +24,11 @@ public abstract class Solvent {
                 if (!parameters.containsKey(name)) {
                     parameters.put(name, value);
                 } else {
-                    log.warm("Duplicated parameter '" + name + "' given. Ignoring...");
+                    log.warn("Duplicated parameter '" + name + "' given. Ignoring...");
                 }
 
             } catch (Exception e) {
-                log.error();
+                log.error("Error - " + e.getMessage());
             }
         }
     }

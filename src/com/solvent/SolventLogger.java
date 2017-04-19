@@ -1,6 +1,12 @@
 package com.solvent;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Appender;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.Configurator;
 
 import java.io.File;
@@ -56,7 +62,4 @@ public class SolventLogger {
     public static Logger getLogger(String name) {
         return LogManager.getLogger("solvent." + name);
     }
-
-
-
 }
