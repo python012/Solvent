@@ -35,6 +35,7 @@ public abstract class SolventTestCase {
 	private static ArrayList<CheckPoint> checkPoints = null;
 	protected static Logger log;
 	private final File directory = new File("/Users/reed/Documents/tmp1");
+	private static ArrayList<SolventStopWatch> Timers = null;
 
 	public SolventTestCase() {
 		log = SolventLogger.getLogger(this.getClass());
@@ -47,6 +48,23 @@ public abstract class SolventTestCase {
 		String methodName = description.getMethodName();
 		return new File(directory, className + "_" + methodName + ".png");
 	}
+
+	private static void checkTimers() {
+		StringBuilder sb = new StringBuilder("ID,TIME");
+		for (SolventStopWatch timer:Timers){
+			sb.append("\n");
+			sb.append("\"" + timer.getID() + "\"");
+			sb.append(",");
+			sb.append("\"" + timer.getTime() + "\"");
+		}
+		log.info(sb.toString());
+	}
+	
+	public SolventStopWatch newStopWatch(String id) {
+		SolventStopWatch timer = new SolventStopWatch(id);
+		Timers.add(timer);
+		return timer;
+	}
 	
 	@Rule
 	public TestRule watcher = new TestWatcher() {
@@ -58,6 +76,8 @@ public abstract class SolventTestCase {
 
 	@BeforeClass
 	public void setupClass() {
+		Timers = new ArrayList<SolventStopWatch>();
+		newStopWatch(null);
 		startHSQL();
 	}
 
@@ -76,6 +96,7 @@ public abstract class SolventTestCase {
 
 	@AfterClass
 	public static void tearDownClass() {
+		checkTimers();
 		HsqldbHelper.stopHSQL();
 	}
 
