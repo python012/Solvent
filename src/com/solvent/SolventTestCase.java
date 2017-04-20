@@ -31,73 +31,16 @@ import com.solvent.SolventToolkit;
  */
 public abstract class SolventTestCase {
 
-	private static ArrayList<Timer> timers = null;
+	// private static ArrayList<Timer> timers = null;
 	private static ArrayList<CheckPoint> checkPoints = null;
 	protected static Logger log;
 	private final File directory = new File("/Users/reed/Documents/tmp1");
-	private static ArrayList<SolventStopWatch> Timers = null;
+	private static ArrayList<SolventStopWatch> timers;
 
 	public SolventTestCase() {
 		log = SolventLogger.getLogger(this.getClass());
 		I18NUtil.processI18NKeys(this);
 		directory.mkdir();
-	}
-
-	private File filenameFor(Description description) {
-		String className = description.getClassName();
-		String methodName = description.getMethodName();
-		return new File(directory, className + "_" + methodName + ".png");
-	}
-
-	private static void checkTimers() {
-		StringBuilder sb = new StringBuilder("ID,TIME");
-		for (SolventStopWatch timer:Timers){
-			sb.append("\n");
-			sb.append("\"" + timer.getID() + "\"");
-			sb.append(",");
-			sb.append("\"" + timer.getTime() + "\"");
-		}
-		log.info(sb.toString());
-	}
-	
-	public SolventStopWatch newStopWatch(String id) {
-		SolventStopWatch timer = new SolventStopWatch(id);
-		Timers.add(timer);
-		return timer;
-	}
-	
-	@Rule
-	public TestRule watcher = new TestWatcher() {
-		@Override
-		public void failed(Throwable e, Description description) {
-			SolventToolkit.silentlySaveScreenshotTo(filenameFor(description), "png");
-		}
-	};
-
-	@BeforeClass
-	public void setupClass() {
-		Timers = new ArrayList<SolventStopWatch>();
-		newStopWatch(null);
-		startHSQL();
-	}
-
-	@Before
-	public void setup() {
-		checkPoints = new ArrayList<CheckPoint>();
-		timers = new ArrayList<Timer>();
-		start();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		checkForFailures();
-		checkTimers();
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-		checkTimers();
-		HsqldbHelper.stopHSQL();
 	}
 
 	protected abstract void start();
@@ -113,4 +56,60 @@ public abstract class SolventTestCase {
 			log.info("\n\n timed out with exception: " + e.getMessage());
 		}
 	}
+
+	private File filenameFor(Description description) {
+		String className = description.getClassName();
+		String methodName = description.getMethodName();
+		return new File(directory, className + "_" + methodName + ".png");
+	}
+
+	private static void checkTimers() {
+		StringBuilder sb = new StringBuilder("ID,TIME");
+		for (SolventStopWatch timer : timers) {
+			sb.append("\n");
+			sb.append("\"" + timer.getID() + "\"");
+			sb.append(",");
+			sb.append("\"" + timer.getTime() + "\"");
+		}
+		log.info(sb.toString());
+	}
+
+	public SolventStopWatch newStopWatch(String id) {
+		SolventStopWatch timer = new SolventStopWatch(id);
+		timers.add(timer);
+		return timer;
+	}
+
+	@Rule
+	public TestRule watcher = new TestWatcher() {
+		@Override
+		public void failed(Throwable e, Description description) {
+			SolventToolkit.silentlySaveScreenshotTo(filenameFor(description), "png");
+		}
+	};
+
+	@BeforeClass
+	public void setupClass() {
+		timers = new ArrayList<SolventStopWatch>();
+		startHSQL();
+	}
+
+	@Before
+	public void setup() {
+		checkPoints = new ArrayList<CheckPoint>();
+		start();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		checkForFailures();
+		checkTimers();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		checkTimers();
+		HsqldbHelper.stopHSQL();
+	}
+
 }
