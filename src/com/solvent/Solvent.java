@@ -15,10 +15,10 @@ public abstract class Solvent {
         I19NUtil.processI18NKeys(this);
     }
 
-    public void parseParams(String... params) {
+    public void parseParams(String... params) {`
         for (String param : params) {
             try {
-                String name = param.substring(0, param.indexOf('=').trim());
+                String name = param.substring(0, param.indexOf('=')).trim();
                 String value = param.substring(param.indexOf('=') + 1).trim();
 
                 if (!parameters.containsKey(name)) {
