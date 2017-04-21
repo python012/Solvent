@@ -1,4 +1,4 @@
-package com.solvent;
+package com.solvent.util;
 
 import java.awt.AWTException;
 import java.awt.Rectangle;
