@@ -7,7 +7,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.apache.log4j.spi.Configurator;
 
 import java.io.File;
 import java.util.UUID;
@@ -44,6 +43,8 @@ public class SolventLogger {
 			if (logFile != null) {
 				try {
 					Appender fileApp = new FileAppender(new PatternLayout(pattern), logFile.getPath());
+					fileApp.setName(FILE_APPENDER_NAME);
+					root.addAppender(fileApp);
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}
