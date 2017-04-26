@@ -11,6 +11,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.solvent.SolventLogger;
+import com.solvent.SolventTestCase;
 
 public class InputFileDigester {
 	private static final Logger log = SolventLogger.getLogger(InputFileDigester.class.getName());
@@ -49,7 +50,7 @@ public class InputFileDigester {
 			Element datasets = (Element)this.doc.selectSingleNode("//dataset");
 			for (Iterator d=datasets.elementIterator("dataset"); d.hasNext();) {
 				Element data = (Element)d.next();
-				String dataSetName = = data.attributeValue("name");
+				String dataSetName = data.attributeValue("name");
 				SolventTestDataSetBean dataSetBean = new SolventTestDataSetBean(dataSetName);
 				for (Iterator v = data.elementIterator("var");v.hasNext();) {
 					Element elem = (Element)v.next();
