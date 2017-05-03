@@ -10,6 +10,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import com.solvent.SolventLogger;
+import com.solvent.exception.ConfigurationError;
 
 public class Configurator {
 	public static final String DEFAULT_PROPERTIES_RESOURCE = "/com/solvent/conf/solvent-defaults.properties";

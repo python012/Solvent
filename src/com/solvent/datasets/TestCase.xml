@@ -3,8 +3,6 @@
 	<workingDataSet name="active" />
 	<datasets>
 		<dataset name="active">
-			<!-- single user -->
-			>
 			<var name="userName">admin</var>
 			<var name="userPassword">admin</var>
 		</dataset>
