@@ -8,6 +8,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+import com.solvent.util.Configurator;
+
 import java.io.File;
 import java.util.UUID;
 
@@ -18,11 +20,8 @@ public class SolventLogger {
 
 	public static final String CONSOLE_APPENDER_NAME = UUID.randomUUID().toString();
 	public static final String FILE_APPENDER_NAME = UUID.randomUUID().toString();
-
 	private static Logger root = LogManager.getRootLogger();
-
 	private static boolean configureExternally = root.getAllAppenders().hasMoreElements();
-
 	private static String defaultPattern = Configurator.getSolventOutputPattern();
 	private static String defaultVerbosity = Configurator.getSolventOutputVerbosity();
 

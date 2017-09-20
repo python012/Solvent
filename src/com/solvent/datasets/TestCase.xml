@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testConfig>
+	<workingDataSet name="active" />
+	<datasets>
+		<dataset name="active">
+			<var name="userName">admin</var>
+			<var name="userPassword">admin</var>
+		</dataset>
+		<dataset name="dataDriven">
+			<var name="userName">admin</var>
+			<list name="password">
+				<var>admin</var>
+				<var>solvent</var>
+				<var>testlink1</var>
+				<var>testlink2</var>
+				<var></var>
+			</list>
+		</dataset>
+	</datasets>
+</testConfig>

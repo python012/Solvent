@@ -17,6 +17,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -25,6 +26,9 @@ import com.solvent.timerHelper.Timer;
 import static com.solvent.util.SolventToolkit.silentlySaveScreenshotTo;
 import com.solvent.l10nHelper.I18NUtil;
 import com.solvent.SolventLogger;
+import com.solvent.datasets.InputFileDigester;
+import com.solvent.datasets.InputFileFinder;
+import com.solvent.datasets.SolventTestDataSet;
 import com.solvent.exception.SolventException;
 
 /**
@@ -36,6 +40,8 @@ public abstract class SolventTestCase {
 	protected static Logger log;
 	private final File directory = new File("/Users/dir_for_failed_screenshots");
 	private static ArrayList<SolventStopWatch> timers;
+	private SolventTestDataSet data;
+	private static String dataSetOverride;
 
 	public SolventTestCase() {
 		log = SolventLogger.getLogger(this.getClass());
@@ -117,10 +123,34 @@ public abstract class SolventTestCase {
 		return false;
 	}
 
+	private void initializeDataSet() {
+		try {
+			InputStream in = InputFileFinder.getInputFileAsStream(this);
+			if (in != null) {
+				log.info("Found test input...digesting file...");
+				InputFileDigester digester = new InputFileDigester(in);
+				digester.parseDataSets(getDataSetOverride());
+				data = digester.getWorkingDataSet();
+			} else {
+				log.info("No test input file found");
+			}
+		} catch (Exception e) {
+			log.error("Error while parsing input file..");
+		}
+	}
+
 	public SolventStopWatch newStopWatch(String id) {
 		SolventStopWatch timer = new SolventStopWatch(id);
 		timers.add(timer);
 		return timer;
+	}
+
+	public static void setDataSetOverride(String dataName) {
+		dataSetOverride = dataName;
+	}
+
+	public static String getDataSetOverride() {
+		return dataSetOverride;
 	}
 
 	@Rule
@@ -139,6 +169,7 @@ public abstract class SolventTestCase {
 
 	@Before
 	public void setup() {
+		initializeDataSet();
 		checkPoints = new ArrayList<CheckPoint>();
 		start();
 	}

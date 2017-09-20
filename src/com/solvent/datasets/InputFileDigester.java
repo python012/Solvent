@@ -12,6 +12,7 @@ import org.dom4j.io.SAXReader;
 
 import com.solvent.SolventLogger;
 import com.solvent.SolventTestCase;
+import com.solvent.exception.SolventException;
 
 public class InputFileDigester {
 	private static final Logger log = SolventLogger.getLogger(InputFileDigester.class.getName());
@@ -28,12 +29,12 @@ public class InputFileDigester {
 	}
 
 	public SolventTestDataSet getWorkingDataSet() {
-		return workingDataset;
+		return workingDataSet;
 	}
 
-	public ArrayList<SolventTestDataSet> parseDataSets(String suiteDataSetName) {
+	public ArrayList<SolventTestDataSet> parseDataSets(String suiteDataSetName) throws SolventException {
 		ArrayList<SolventTestDataSet> dataSetCollection = new ArrayList<SolventTestDataSet>();
-		Element workingDS = (Element)this.doc.selectSingleNode("/testConfig/workingDataSet");
+		Element workingDS = (Element) this.doc.selectSingleNode("/testConfig/workingDataSet");
 		String workingDSName = null;
 
 		if (suiteDataSetName != null && suiteDataSetName.trim().length() != 0) {
@@ -44,43 +45,43 @@ public class InputFileDigester {
 			}
 		}
 		log.debug("========== Working Data Set: " + workingDSName);
-		
+
 		if (workingDSName != null) {
 			SolventTestCase.setDataSetOverride(workingDSName);
-			Element datasets = (Element)this.doc.selectSingleNode("//dataset");
-			for (Iterator d=datasets.elementIterator("dataset"); d.hasNext();) {
-				Element data = (Element)d.next();
+			Element datasets = (Element) this.doc.selectSingleNode("//dataset");
+			for (Iterator d = datasets.elementIterator("dataset"); d.hasNext();) {
+				Element data = (Element) d.next();
 				String dataSetName = data.attributeValue("name");
 				SolventTestDataSetBean dataSetBean = new SolventTestDataSetBean(dataSetName);
-				for (Iterator v = data.elementIterator("var");v.hasNext();) {
-					Element elem = (Element)v.next();
+				for (Iterator v = data.elementIterator("var"); v.hasNext();) {
+					Element elem = (Element) v.next();
 					dataSetBean.addVar(elem.valueOf("@name"), elem.valueOf("."));
 				}
-				for (Iterator f = data.elementIterator("file");v.hasNext();) {
-					Element elem = (Element)f.next();
+				for (Iterator f = data.elementIterator("file"); f.hasNext();) {
+					Element elem = (Element) f.next();
 					dataSetBean.addVar(elem.valueOf("@name"), elem.valueOf("."));
 				}
-				
-				for (Iterator l = data.elementIterator("file");l.hasNext();) {
-					Element elem = (Element)l.next();
+
+				for (Iterator l = data.elementIterator("file"); l.hasNext();) {
+					Element elem = (Element) l.next();
 					String listName = elem.attributeValue("name");
 					ArrayList<String> varList = new ArrayList<String>();
 					for (Iterator v = elem.elementIterator("var"); v.hasNext();) {
-						Element listElem = (Element)v.next();
+						Element listElem = (Element) v.next();
 						varList.add(listElem.getText());
 					}
 					if (varList.size() > 0) {
 						dataSetBean.addVarList(listName, varList);
 					} else {
 						ArrayList<String> fileList = new ArrayList<String>();
-						for (Iterator f = elem.elementIterator("file");f.hasNext();) {
-							Element listElem = (Element)f.next();
+						for (Iterator f = elem.elementIterator("file"); f.hasNext();) {
+							Element listElem = (Element) f.next();
 							fileList.add(listElem.getText());
 						}
 						dataSetBean.addFiles(listName, fileList);
 					}
 				}
-				
+
 				SolventTestDataSet dataSet = new SolventTestDataSet(dataSetBean);
 				dataSetCollection.add(dataSet);
 				if (dataSetName.equals(workingDSName)) {
@@ -89,8 +90,7 @@ public class InputFileDigester {
 					throw new SolventException("No Data Set defined!");
 				}
 			}
-			 return dataSetCollection;
 		}
+		return dataSetCollection;
 	}
 }
-

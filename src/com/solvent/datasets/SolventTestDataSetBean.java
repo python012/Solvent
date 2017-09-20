@@ -5,15 +5,14 @@ import java.util.Hashtable;
 
 public class SolventTestDataSetBean {
 	private Hashtable<String, String> myVars = new Hashtable<String, String>();
-	private Hashtable<String, ArrayList<String>> myVarLists =
-			new Hashtable<String, ArrayList<String>>();
+	private Hashtable<String, ArrayList<String>> myVarLists = new Hashtable<String, ArrayList<String>>();
 	private Hashtable<String, String> myFiles = new Hashtable<String, String>();
-	private Hashtable<String, ArrayList<String>> myFileLists =
-			new Hashtable<String, ArrayList<String>>();
+	private Hashtable<String, ArrayList<String>> myFileLists = new Hashtable<String, ArrayList<String>>();
 	private String name;
 
 	public SolventTestDataSetBean(String name) {
-		this.name = name; // this name is the name of some <dataset> in the XML file
+		this.name = name; // this name is the name of some <dataset> in the XML
+							// file
 	}
 
 	public void addVar(String varName, String varValue) {

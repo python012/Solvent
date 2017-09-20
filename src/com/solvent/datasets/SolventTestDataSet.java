@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.solvent.exception.InvalidFileException;
 
 public class SolventTestDataSet {
+
 	private SolventTestDataSetBean myBean;
 
 	public SolventTestDataSet(SolventTestDataSetBean bean) {
@@ -25,14 +26,6 @@ public class SolventTestDataSet {
 		return varValue;
 	}
 	
-	public ArrayList<String> getVariables(String listName) {
-		ArrayList<String> vars = myBean.getVarValues(listName);
-		if (null == vars) {
-			throw new InvalidParameterException("Input variables list \"" + listName + "\" not found");
-		}
-		return vars;
-	}
-	
 	public File getFile(String fileName) throws InvalidFileException {
 		String filePath = myBean.getFile(fileName);
 		if (null == filePath) {
@@ -44,11 +37,11 @@ public class SolventTestDataSet {
 		}
 		return file;
 	}
-	
+
 	public ArrayList<File> getFiles(String listName) throws InvalidFileException {
 		ArrayList<String> filePaths = myBean.getFiles(listName);
 		if (null == filePaths) {
-			throw new InvalidParameterException("Input list variables \"" + listName + "\" not found");
+			throw new InvalidParameterException("Input list variable \"" + listName + "\" not found");
 		}
 		ArrayList<File> files = new ArrayList<File>();
 		for (String filePath : filePaths) {
