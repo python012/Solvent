@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
+import com.solvent.l10nHelper.I18NUtil;
+
 /**
  * Created by reed on 16/10/13.
  */
@@ -12,7 +14,7 @@ public abstract class Solvent {
 	protected final HashMap<String, String> parameters = new HashMap<String, String>();
 
 	public Solvent() {
-		I19NUtil.processI18NKeys(this);
+		I18NUtil.processI18NKeys(this);
 	}
 
 	public void parseParams(String... params) {`

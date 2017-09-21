@@ -80,7 +80,7 @@ public abstract class SolventTestCase {
 		log.info(sb.toString());
 	}
 
-	private void checkForFailures() {
+	private void checkForFailures() throws SolventException {
 		String exceptionMessage = "";
 		boolean checkFailureFound = false;
 		for (CheckPoint check : checkPoints) {
@@ -101,11 +101,11 @@ public abstract class SolventTestCase {
 		return checkPoints;
 	}
 
-	public CheckPoint newCheckPoint(String id) {
+	public CheckPoint newCheckPoint(String id) throws SolventException {
 		return newCheckPoint(id, "");
 	}
 
-	public CheckPoint newCheckPoint(String id, String description) {
+	public CheckPoint newCheckPoint(String id, String description) throws SolventException {
 		if (!checkExists(id)) {
 			CheckPoint check = new CheckPoint(id, description);
 			checkPoints.add(check);
@@ -153,6 +153,18 @@ public abstract class SolventTestCase {
 		return dataSetOverride;
 	}
 
+	public SolventTestDataSet getData() throws SolventException {
+		if (data == null) {
+			throw new SolventException("Cannot retrieve dataset. No dataset was found for this test class.");
+		}
+		return data;
+	}
+	
+	public void useDataSet(String dataSetName) {
+		setDataSetOverride(dataSetName);
+		initializeDataSet();
+	}
+	
 	@Rule
 	public TestRule watcher = new TestWatcher() {
 		@Override
