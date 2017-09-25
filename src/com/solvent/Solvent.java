@@ -17,7 +17,7 @@ public abstract class Solvent {
 		I18NUtil.processI18NKeys(this);
 	}
 
-	public void parseParams(String... params) {`
+	public void parseParams(String... params) {
         for (String param : params) {
             try {
                 String name = param.substring(0, param.indexOf('=')).trim();
