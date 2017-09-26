@@ -17,7 +17,7 @@ public abstract class SeMet extends Solvent {
     private static final Logger log = SolventLogger.getLogger(SeMet.class);
     private String id = null;
     private String name = null;
-    private String XPath = null;
+    private String xPath = null;
     private String rootXPath = null;
     private WebElement element = null;
     private String elementTag = "*";
@@ -82,7 +82,7 @@ public abstract class SeMet extends Solvent {
             return;
         }
 
-        if (this.xpath != null && this.xpath.length() > 0) {
+        if (this.xPath != null && this.xPath.length() > 0) {
             rootXPath = this.xPath;
             return;
         }
