@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.solvent.Solvent;
@@ -223,5 +224,70 @@ public abstract class SeMet extends Solvent {
             log.debug("Element not present, locator: " + locator);
         }
         return present;
+    }
+
+    public boolean isElementPresent(String locator) {
+        return isElementPresent(locator, 5000); // could use properties file to set this value
+    }
+
+    public void moveTo(WebElement element) {
+        Actions action = new Actions(driver);
+        action.moveToElement(element).build().perform();
+        pause(500);
+    }
+
+    public void mouseOver(WebElement element) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("var element = arguments[0]");
+        sb.append("if (document.createEvent) {");
+        sb.append("var event = document.createEvent(\"MouseEvents\");");
+        sb.append("event.initMouseEvent(\"mouseover\", true, true, window, 0, 0," +
+                "0, 0, 0, false, false, false, false, 0, null);");
+        sb.append("element.dispatchEvent(event);");
+        sb.append("}");
+        sb.append("else if (element.fireEvent) {");
+        sb.append("element.fireEvent(\"onmouseover\");");
+        sb.append("}");
+        driver.executeScript(sb.toString(), element);
+    }
+
+    public void mouseOver(String locator) {
+        mouseOver(getElementUsingXpath(locator));
+        pause(500);
+    }
+
+    public void pause(long time) {
+        SetMetWebDriverSession.pause(time);
+    }
+
+    public static void waitForContent() {
+        log.debug("Wait for page content to be ready. Ensure all " +
+                "ajax calls are complete before test continue.");
+        SetMetWebDriverSession.pause(3000); // a simple way to wait for ajax
+    }
+
+    public void setCheckBox(WebElement checkbox, boolean check) {
+        if (checkbox.isSelected()) {
+            if (!check) {
+                checkbox.click();
+            }
+        } else if (check) {
+            checkbox.click();
+        }
+    }
+
+    protected void setRadioByValue(List<WebElement> options, String value) {
+        for (WebElement option:options) {
+            String optionValue = option.getAttribute("value");
+            if (optionValue.hashCode() == value.hashCode()) {
+                log.debug("\n found radio box with value='" + value + "'");
+                option.click();
+                break;
+            }
+        }
+    }
+
+    public void importFile(WebElement element, String filePath) {
+        element.sendKeys(filePath);
     }
 }
