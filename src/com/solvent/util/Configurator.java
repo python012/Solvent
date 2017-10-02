@@ -175,4 +175,13 @@ public class Configurator {
         return getIntOption(TESTCASE_TIMEOUT) * 60 * 1000;
     }
 
+    public static File getIEDriver() {
+        return new File("/filepath");
+        // TO DO
+    }
+
+    public static String getBrowserName() {
+        return new String("browser name");
+        // TO DO
+    }
 }
