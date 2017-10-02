@@ -12,21 +12,21 @@ import javax.imageio.ImageIO;
 
 public class SolventToolkit {
 
-	public static void silentlySaveScreenshotTo(File file, String format) {
-		try {
-			saveScreenshotTo(file, format);
-		} catch (Exception e) {
-			System.err.println("Failed to screenshot to " + file + ", " + e);
-		}
-	}
+    public static void silentlySaveScreenshotTo(File file, String format) {
+        try {
+            saveScreenshotTo(file, format);
+        } catch (Exception e) {
+            System.err.println("Failed to screenshot to " + file + ", " + e);
+        }
+    }
 
-	private static BufferedImage takeScreenshot() throws AWTException {
-		Robot robot = new Robot();
-		Rectangle captureSize = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-		return robot.createScreenCapture(captureSize);
-	}
+    private static BufferedImage takeScreenshot() throws AWTException {
+        Robot robot = new Robot();
+        Rectangle captureSize = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        return robot.createScreenCapture(captureSize);
+    }
 
-	private static void saveScreenshotTo(File file, String format) throws AWTException, IOException {
-		ImageIO.write(takeScreenshot(), format, file);
-	}
+    private static void saveScreenshotTo(File file, String format) throws AWTException, IOException {
+        ImageIO.write(takeScreenshot(), format, file);
+    }
 }
