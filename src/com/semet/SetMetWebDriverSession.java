@@ -18,4 +18,13 @@ public class SetMetWebDriverSession {
     public static void set(RemoteWebDriver instance) {
         rwd.set(instance);
     }
+
+    public static void pause(long i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException in pause()");
+            log.error(e.getMessage());
+        }
+    }
 }

@@ -29,7 +29,8 @@ public class Configurator {
         try {
             defaults.load(Configurator.class.getResourceAsStream(DEFAULT_PROPERTIES_RESOURCE));
         } catch (IOException e) {
-            throw new ConfigurationError(e.getMessage(), e);
+//            throw new ConfigurationError(e.getMessage(), e);
+            log.error("ConfigurationError: " + e.getMessage());
         }
         if (null != propFileName) {
             File propFile = new File(propFileName);
@@ -39,8 +40,10 @@ public class Configurator {
                 props.load(new FileInputStream(propFile));
                 initialize(props);
             } catch (IOException e) {
-                throw new ConfigurationError("Error while loading configuration file: " + propFile.getAbsolutePath(),
-                        e);
+//                throw new ConfigurationError("Error while loading configuration file: " + propFile.getAbsolutePath(),
+//                        e);
+                log.error("Error while loading configuration file: " + propFile.getAbsolutePath());
+                log.error("ConfigurationError: " + e.getMessage());
             }
         }
     }
