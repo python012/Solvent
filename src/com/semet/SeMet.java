@@ -45,7 +45,7 @@ public abstract class SeMet extends Solvent {
         if (null != driver) {
             SetMetWebDriverSession.set(driver);
         }
-        driver = SetMetWebDriverSession.get();
+        this.driver = SetMetWebDriverSession.get();
     } // this help driver register in SetMetWebDriverSession
 
     public SeMet(WebElement element) {
@@ -198,11 +198,11 @@ public abstract class SeMet extends Solvent {
     }
 
     public boolean isElementPresent(String locator, int wait) {
-        boolean present = (getElementUsingXpath(locator) != null) ? true:false;
+        boolean present = (getElementUsingXpath(locator) != null) ? true : false;
         while (!present && wait > 0) {
             waitfor(500);
             wait -= 500;
-            present = (getElementUsingXpath(locator) != null) ? true:false;
+            present = (getElementUsingXpath(locator) != null) ? true : false;
         }
         if (!present) {
             log.debug("Element not present, locator: " + locator);
@@ -211,12 +211,12 @@ public abstract class SeMet extends Solvent {
     }
 
     public boolean isElementPresentAndVisible(String locator, int wait) {
-        boolean present = (getElementUsingXpath(locator) != null) ? true:false;
+        boolean present = (getElementUsingXpath(locator) != null) ? true : false;
         while (!present && wait > 0) {
             waitfor(500);
             wait -= 500;
-            present = (getElementUsingXpath(locator) != null) ? true:false;
-            if (getElementsUsingXpath(locator) !=null) {
+            present = (getElementUsingXpath(locator) != null) ? true : false;
+            if (getElementsUsingXpath(locator) != null) {
                 present = getElementUsingXpath(locator).isDisplayed();
             }
         }
@@ -230,7 +230,7 @@ public abstract class SeMet extends Solvent {
         return isElementPresent(locator, 5000); // could use properties file to set this value
     }
 
-    public void moveTo(WebElement element) {
+    public void moveTo(WebElement element) throws InterruptedException {
         Actions action = new Actions(driver);
         action.moveToElement(element).build().perform();
         pause(500);
@@ -251,16 +251,16 @@ public abstract class SeMet extends Solvent {
         driver.executeScript(sb.toString(), element);
     }
 
-    public void mouseOver(String locator) {
+    public void mouseOver(String locator) throws InterruptedException {
         mouseOver(getElementUsingXpath(locator));
         pause(500);
     }
 
-    public void pause(long time) {
+    public void pause(long time) throws InterruptedException {
         SetMetWebDriverSession.pause(time);
     }
 
-    public static void waitForContent() {
+    public static void waitForContent() throws InterruptedException {
         log.debug("Wait for page content to be ready. Ensure all " +
                 "ajax calls are complete before test continue.");
         SetMetWebDriverSession.pause(3000); // a simple way to wait for ajax
@@ -277,7 +277,7 @@ public abstract class SeMet extends Solvent {
     }
 
     protected void setRadioByValue(List<WebElement> options, String value) {
-        for (WebElement option:options) {
+        for (WebElement option : options) {
             String optionValue = option.getAttribute("value");
             if (optionValue.hashCode() == value.hashCode()) {
                 log.debug("\n found radio box with value='" + value + "'");

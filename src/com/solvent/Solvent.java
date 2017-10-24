@@ -59,9 +59,9 @@ public abstract class Solvent {
         return sol;
     }
 
-    public static void waitfor(long milles) {
+    public static void waitfor(long time) {
         try {
-            Thread.sleep(milles);
+            Thread.sleep(time);
         } catch (Exception e) {
             log.error("\n\n Time Out With Exception: " + e.getMessage());
         }
