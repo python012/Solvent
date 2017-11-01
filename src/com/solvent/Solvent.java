@@ -59,7 +59,7 @@ public abstract class Solvent {
         return sol;
     }
 
-    public static void waitfor(long time) {
+    public static void waitFor(long time) {
         try {
             Thread.sleep(time);
         } catch (Exception e) {

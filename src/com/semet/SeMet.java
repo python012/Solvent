@@ -200,7 +200,7 @@ public abstract class SeMet extends Solvent {
     public boolean isElementPresent(String locator, int wait) {
         boolean present = (getElementUsingXpath(locator) != null) ? true : false;
         while (!present && wait > 0) {
-            waitfor(500);
+            waitFor(500);
             wait -= 500;
             present = (getElementUsingXpath(locator) != null) ? true : false;
         }
@@ -213,7 +213,7 @@ public abstract class SeMet extends Solvent {
     public boolean isElementPresentAndVisible(String locator, int wait) {
         boolean present = (getElementUsingXpath(locator) != null) ? true : false;
         while (!present && wait > 0) {
-            waitfor(500);
+            waitFor(500);
             wait -= 500;
             present = (getElementUsingXpath(locator) != null) ? true : false;
             if (getElementsUsingXpath(locator) != null) {
