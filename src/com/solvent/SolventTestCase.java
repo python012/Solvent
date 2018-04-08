@@ -181,7 +181,12 @@ public abstract class SolventTestCase {
         startHSQL();
     }
 
-    @Before
+    private void startHSQL() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Before
     public void setup() {
         initializeDataSet();
         checkPoints = new ArrayList<CheckPoint>();
