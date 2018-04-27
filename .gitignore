@@ -24,9 +24,5 @@ Solvent.iml
 hs_err_pid*
 /bin/
 /target/
-<<<<<<< Updated upstream
 .idea/
-=======
-/.idea/
 Solvent.iml
->>>>>>> Stashed changes
